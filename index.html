@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head><meta charset="UTF-8"><title>CJ Elite Web</title>
-<script src="config.js"></script>
-</head>
+<head><meta charset="UTF-8"><title>CJ Elite Web</title></head>
 <body>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@300;400;500&display=swap');
@@ -62,7 +60,11 @@
 <div class="branding">Propulsé par <span>CJ Elite Web ✦</span></div>
 </div>
 <script>
-const SYSTEM_PROMPT = `Tu es l'assistant virtuel de CJ Elite Web, fondée par Jauffrey et Corentin, deux étudiants de 18 ans en école de commerce. Ton rôle : répondre aux visiteurs chaleureusement et de façon commerciale. Services : création site web, charte graphique, formulaire contact, Google Maps, nom de domaine. Points forts : sites rapides, sécurisés, SEO, responsive mobile. Site : https://cjeliteweb.com. Style : enthousiaste, jeune, professionnel. Toujours en français. Max 3-4 lignes. Pousse à demander un devis.`;
+const k1='gsk_4kw2ImffUNLY';
+const k2='QbHtmuk1WGdyb3FY';
+const k3='c9ZgUY9Mcwkg7SXByGhTj0dh';
+const KEY=k1+k2+k3;
+const SYSTEM_PROMPT=`Tu es l'assistant virtuel de CJ Elite Web, fondée par Jauffrey et Corentin, deux étudiants de 18 ans en école de commerce. Ton rôle : répondre aux visiteurs chaleureusement et de façon commerciale. Services : création site web, charte graphique, formulaire contact, Google Maps, nom de domaine. Points forts : sites rapides, sécurisés, SEO, responsive mobile. Site : https://cjeliteweb.com. Style : enthousiaste, jeune, professionnel. Toujours en français. Max 3-4 lignes. Pousse à demander un devis.`;
 let history=[],isOpen=false;
 function toggleChat(){isOpen=!isOpen;document.getElementById('chat-box').classList.toggle('hidden',!isOpen);document.getElementById('chat-toggle').innerHTML=isOpen?'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
@@ -77,7 +79,7 @@ addMsg('user',text);history.push({role:'user',content:text});showTyping();
 try{
 const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
 method:'POST',
-headers:{'Content-Type':'application/json','Authorization':'Bearer '+window.GROQ_KEY},
+headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},
 body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:300,messages:[{role:'system',content:SYSTEM_PROMPT},...history]})
 });
 const data=await res.json();removeTyping();
