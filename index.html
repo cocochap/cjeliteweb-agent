@@ -60,6 +60,8 @@
 <div class="branding">Propulsé par <span>CJ Elite Web ✦</span></div>
 </div>
 <script>
+const GROQ_API_KEY = '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';
+const SYSTEM_PROMPT = `Tu es l'assistant virtuel de CJ Elite Web, fondée par Jauffrey et Corentin, deux étudiants de 18 ans en école de commerce. Ton rôle : répondre aux visiteurs chaleureusement et de façon commerciale. Services : création site web, charte graphique, formulaire contact, Google Maps, nom de domaine. Points forts : sites rapides, sécurisés, SEO, responsive mobile. Site : https://cjeliteweb.com. Style : enthousiaste, jeune, professionnel. Toujours en français. Max 3-4 lignes. Pousse à demander un devis.`;
 let history=[],isOpen=false;
 function toggleChat(){isOpen=!isOpen;document.getElementById('chat-box').classList.toggle('hidden',!isOpen);document.getElementById('chat-toggle').innerHTML=isOpen?'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
@@ -72,9 +74,14 @@ const text=input.value.trim();if(!text)return;
 input.value='';document.getElementById('send-btn').disabled=true;
 addMsg('user',text);history.push({role:'user',content:text});showTyping();
 try{
-const res=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history})});
+const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+method:'POST',
+headers:{'Content-Type':'application/json','Authorization':'Bearer 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'},
+body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:300,messages:[{role:'system',content:SYSTEM_PROMPT},...history]})
+});
 const data=await res.json();removeTyping();
-addMsg('bot',data.reply);history.push({role:'assistant',content:data.reply});
+addMsg('bot',data.choices[0].message.content);
+history.push({role:'assistant',content:data.choices[0].message.content});
 }catch(e){removeTyping();addMsg('bot','⚠️ Erreur de connexion.');}
 document.getElementById('send-btn').disabled=false;input.focus();
 }
