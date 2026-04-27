@@ -8,17 +8,19 @@
 #chat-toggle{position:fixed;bottom:24px;right:24px;width:58px;height:58px;background:linear-gradient(135deg,#c9a84c,#f5d782,#c9a84c);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(201,168,76,0.25),0 8px 28px rgba(0,0,0,0.5);transition:transform 0.2s;z-index:9999}
 #chat-toggle:hover{transform:scale(1.07)}
 #chat-toggle svg{width:26px;height:26px}
-#chat-box{position:fixed;bottom:96px;right:24px;width:340px;background:#111;border:1px solid rgba(201,168,76,0.25);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.7);z-index:9998;font-family:'DM Sans',sans-serif;animation:slideUp 0.3s cubic-bezier(0.22,1,0.36,1)}
+#chat-box{position:fixed;bottom:96px;right:24px;width:340px;background:#111;border:1px solid rgba(201,168,76,0.25);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.7);z-index:9998;font-family:'DM Sans',sans-serif;animation:slideUp 0.3s cubic-bezier(0.22,1,0.36,1);transition:width 0.3s,height 0.3s,bottom 0.3s,right 0.3s,border-radius 0.3s}
 #chat-box.hidden{display:none}
+#chat-box.expanded{width:600px;bottom:24px;right:24px}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.chat-header{background:linear-gradient(135deg,#1a1a1a,#0f0f0f);border-bottom:1px solid rgba(201,168,76,0.2);padding:14px 16px;display:flex;align-items:center;gap:10px}
+.chat-header{background:linear-gradient(135deg,#1a1a1a,#0f0f0f);border-bottom:1px solid rgba(201,168,76,0.2);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .avatar{width:36px;height:36px;background:linear-gradient(135deg,#c9a84c,#f5d782);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .header-name{font-family:'Playfair Display',serif;font-size:14px;color:#f5d782}
 .header-status{font-size:11px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:4px;margin-top:2px}
 .status-dot{width:6px;height:6px;background:#4ade80;border-radius:50%}
-.close-btn{background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:20px;margin-left:auto;transition:color 0.2s;line-height:1;padding:0 2px}
-.close-btn:hover{color:#f5d782}
-#messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;max-height:320px;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.2) transparent}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:4px}
+.icon-btn{background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:16px;transition:color 0.2s;padding:4px 6px;line-height:1;border-radius:4px}
+.icon-btn:hover{color:#f5d782;background:rgba(201,168,76,0.1)}
+#messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.2) transparent}
 .msg{max-width:85%;font-size:13px;line-height:1.55;animation:fadeIn 0.25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .msg.bot{align-self:flex-start;background:#1e1e1e;border:1px solid rgba(201,168,76,0.15);color:rgba(255,255,255,0.85);border-radius:4px 12px 12px 12px;padding:10px 13px}
@@ -28,7 +30,7 @@
 .typing span:nth-child(2){animation-delay:.15s}
 .typing span:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-.chat-footer{border-top:1px solid rgba(201,168,76,0.15);padding:12px;display:flex;gap:8px;background:#0f0f0f}
+.chat-footer{border-top:1px solid rgba(201,168,76,0.15);padding:12px;display:flex;gap:8px;background:#0f0f0f;flex-shrink:0}
 #user-input{flex:1;background:#1a1a1a;border:1px solid rgba(201,168,76,0.2);border-radius:8px;color:rgba(255,255,255,0.85);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;outline:none;resize:none;transition:border-color 0.2s}
 #user-input:focus{border-color:rgba(201,168,76,0.5)}
 #user-input::placeholder{color:rgba(255,255,255,0.2)}
@@ -36,17 +38,25 @@
 #send-btn:hover{transform:scale(1.05)}
 #send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 #send-btn svg{width:16px;height:16px}
-.branding{text-align:center;font-size:10px;color:rgba(255,255,255,0.12);padding:6px 0 4px;font-family:'DM Sans',sans-serif}
+.branding{text-align:center;font-size:10px;color:rgba(255,255,255,0.12);padding:6px 0 4px;font-family:'DM Sans',sans-serif;flex-shrink:0}
 .branding span{color:rgba(201,168,76,0.35)}
 </style>
+
 <button id="chat-toggle" onclick="toggleChat()">
 <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 </button>
+
 <div id="chat-box" class="hidden">
 <div class="chat-header">
-<div class="avatar">✦</div>
-<div><div class="header-name">Assistant CJ Elite Web</div><div class="header-status"><span class="status-dot"></span> En ligne</div></div>
-<button class="close-btn" onclick="toggleChat()">×</button>
+  <div class="avatar">✦</div>
+  <div>
+    <div class="header-name">Assistant CJ Elite Web</div>
+    <div class="header-status"><span class="status-dot"></span> En ligne</div>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="toggleExpand()" id="expand-btn" title="Agrandir">⤢</button>
+    <button class="icon-btn" onclick="toggleChat()" title="Fermer">×</button>
+  </div>
 </div>
 <div id="messages">
 <div class="msg bot">Bonjour 👋 Je suis l'assistant de <strong style="color:#f5d782">CJ Elite Web</strong>. Comment puis-je vous aider ?</div>
@@ -59,34 +69,64 @@
 </div>
 <div class="branding">Propulsé par <span>CJ Elite Web ✦</span></div>
 </div>
+
 <script>
 const k1='gsk_4kw2ImffUNLY';
 const k2='QbHtmuk1WGdyb3FY';
 const k3='c9ZgUY9Mcwkg7SXByGhTj0dh';
 const KEY=k1+k2+k3;
 const SYSTEM_PROMPT=`Tu es l'assistant virtuel de CJ Elite Web, fondée par Jauffrey et Corentin, deux étudiants de 18 ans en école de commerce. Ton rôle : répondre aux visiteurs chaleureusement et de façon commerciale. Services : création site web, charte graphique, formulaire contact, Google Maps, nom de domaine. Points forts : sites rapides, sécurisés, SEO, responsive mobile. Site : https://cjeliteweb.com. Style : enthousiaste, jeune, professionnel. Toujours en français. Max 3-4 lignes. Pousse à demander un devis.`;
-let history=[],isOpen=false;
-function toggleChat(){isOpen=!isOpen;document.getElementById('chat-box').classList.toggle('hidden',!isOpen);document.getElementById('chat-toggle').innerHTML=isOpen?'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';}
+let history=[],isOpen=false,isExpanded=false;
+
+function toggleChat(){
+  isOpen=!isOpen;
+  document.getElementById('chat-box').classList.toggle('hidden',!isOpen);
+  document.getElementById('chat-toggle').innerHTML=isOpen
+    ?'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    :'<svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+}
+
+function toggleExpand(){
+  isExpanded=!isExpanded;
+  const box=document.getElementById('chat-box');
+  const btn=document.getElementById('expand-btn');
+  if(isExpanded){
+    box.style.width='min(600px, 90vw)';
+    box.style.height='80vh';
+    box.style.bottom='24px';
+    btn.textContent='⤡';
+    btn.title='Réduire';
+  } else {
+    box.style.width='340px';
+    box.style.height='';
+    box.style.bottom='96px';
+    btn.textContent='⤢';
+    btn.title='Agrandir';
+  }
+  document.getElementById('messages').scrollTop=99999;
+}
+
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 function addMsg(role,text){const el=document.createElement('div');el.className=`msg ${role}`;el.innerHTML=text;document.getElementById('messages').appendChild(el);document.getElementById('messages').scrollTop=99999;}
 function showTyping(){const el=document.createElement('div');el.className='typing';el.id='typing-indicator';el.innerHTML='<span></span><span></span><span></span>';document.getElementById('messages').appendChild(el);document.getElementById('messages').scrollTop=99999;}
 function removeTyping(){const el=document.getElementById('typing-indicator');if(el)el.remove();}
+
 async function sendMessage(){
-const input=document.getElementById('user-input');
-const text=input.value.trim();if(!text)return;
-input.value='';document.getElementById('send-btn').disabled=true;
-addMsg('user',text);history.push({role:'user',content:text});showTyping();
-try{
-const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-method:'POST',
-headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},
-body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:300,messages:[{role:'system',content:SYSTEM_PROMPT},...history]})
-});
-const data=await res.json();removeTyping();
-addMsg('bot',data.choices[0].message.content);
-history.push({role:'assistant',content:data.choices[0].message.content});
-}catch(e){removeTyping();addMsg('bot','⚠️ Erreur de connexion.');}
-document.getElementById('send-btn').disabled=false;input.focus();
+  const input=document.getElementById('user-input');
+  const text=input.value.trim();if(!text)return;
+  input.value='';document.getElementById('send-btn').disabled=true;
+  addMsg('user',text);history.push({role:'user',content:text});showTyping();
+  try{
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:300,messages:[{role:'system',content:SYSTEM_PROMPT},...history]})
+    });
+    const data=await res.json();removeTyping();
+    addMsg('bot',data.choices[0].message.content);
+    history.push({role:'assistant',content:data.choices[0].message.content});
+  }catch(e){removeTyping();addMsg('bot','⚠️ Erreur de connexion.');}
+  document.getElementById('send-btn').disabled=false;input.focus();
 }
 </script>
 </body>
